@@ -245,7 +245,7 @@ div.carousel {
 .prev,
 .next {
   border: none;
-  margin: 2px;
+  margin: 10px;
   text-align: center;
   border-radius: 5px;
   font-weight: bold;
