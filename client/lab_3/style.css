@@ -139,7 +139,11 @@ form {
   flex: 1 2 auto;
   margin: 1rem;
   align-items: center;
+<<<<<<< HEAD
 
+=======
+  max-width: 450px;
+>>>>>>> d350fb85b877d4368afbc208d61174caf5e23e2b
 }
 
 /*
