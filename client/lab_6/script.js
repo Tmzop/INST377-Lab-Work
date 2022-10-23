@@ -47,13 +47,11 @@ function injectHTML(list) {
 function processRestaurants(list) {
   console.log('fired restaurants list');
   const range = [...Array(15).keys()];
-  const newArray = range.map((item) =>{
+  const newArray = range.map((item)=> {
     const index = getRandomIntInclusive(0, list.length);
     return list[index];
   })
   return newArray;
-
-
   /*
     ## Process Data Separately From Injecting It
       This function should accept your 1,000 records
@@ -73,7 +71,6 @@ function processRestaurants(list) {
     - Return the new list of 15 restaurants so we can work on it separately in the HTML injector
   */
 }
-
 async function mainEvent() {
   /*
     ## Main Event
@@ -84,16 +81,17 @@ async function mainEvent() {
 
   // the async keyword means we can make API requests
   const form = document.querySelector('.main_form'); // get your main form so you can do JS with it
-  const submit = document.querySelector('get-resto'); // get a reference to your submit button
+  const submit = document.querySelector('#get-resto'); // get a reference to your submit button
   const loadAnimation = document.querySelector('.lds-ellipsis');
-  // submit.style.display = 'none'; // let your submit button disappear
+  submit.style.display = 'none'; // let your submit button disappear
 
   /*
     Let's get some data from the API - it will take a second or two to load
     This next line goes to the request for 'GET' in the file at /server/routes/foodServiceRoutes.js
     It's at about line 27 - go have a look and see what we're retrieving and sending back.
    */
-  const results = await fetch('/api/foodServicesPG');
+
+  const results = await fetch('/api/foodServicePG');
   const arrayFromJson = await results.json(); // here is where we get the data from our request as JSON
 
   /*
@@ -102,7 +100,7 @@ async function mainEvent() {
     Dot notation is preferred in JS unless you have a good reason to use brackets
     The 'data' key, which we set at line 38 in foodServiceRoutes.js, contains all 1,000 records we need
   */
-  console.table(arrayFromJson.data);
+  // console.table(arrayFromJson.data);
 
   // in your browser console, try expanding this object to see what fields are available to work with
   // for example: arrayFromJson.data[0].name, etc
@@ -125,7 +123,6 @@ async function mainEvent() {
 
       // This constant will have the value of your 15-restaurant collection when it processes
       const restaurantList = processRestaurants(arrayFromJson.data);
-      console.log(restaurantList);
 
       // And this function call will perform the "side effect" of injecting the HTML list for you
       injectHTML(restaurantList);
