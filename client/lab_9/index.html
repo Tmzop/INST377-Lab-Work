@@ -1,84 +1,46 @@
-<!--
-    This is how to build the CSS-only load animation from loading.io    
-    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-
-    This is helpful for showing your client-side users when data is loading,
-    since there's otherwise no sign your app is thinking about something!
-
-    Try placing it at the same level in your element tree as your Submit button
--->
-<!-- Bring in your successful HTML/CSS from the Flexbox lab -->
-<!-- Your page will need a form in it with an 'action' to /api and a single text field with an id/name of "resto" -->
-<!-- If you open /routes/apiRoutes and go to line 38 you will find the server side answer to your request! -->
-
-<!-- Temporarily unhook your script.js file from your main index file -->
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name='viewport'
-      content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-    <title>lab 9</title>
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-     integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-     crossorigin=""/> -->
-     
-    <link rel='stylesheet' href='style.css'/ media="screen" >
-    
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <!-- <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-    integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-    crossorigin=""></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Web API Tutorial</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css">
 </head>
-    <body>
-        
-        <div class="header">
-            <h1 >Prof A's Labs For INST377</h1>
-        </div>
-        <div class="wrapper">
-            <div class="container">
-            
-            
-                <div class='box left_section'>
-                
-                    <h2 >Form Inputs</h2>
-                    <div class='box'>
-
-                        <form action="/api" class="box main_form">
-                            <div>
-                            <label for = "resto">Restaurant Name</label>
-                            <input type="text" name="resto" id="resto" >
-                            </div>
-
-                            <div>
-                            
-                            </div>
-                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                            <button type="submit" id="form_button">Change Restaurants</button>
-                        </form>
-                    </div>
-                
-                </div>
-
-                <div class = 'box right_section'>
-
-                    <h2>Local Restaurants Map</h2>
-                    
-                    <div class = "chart_container">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-                    <!-- <div id="map" class = "box"></div> -->
-                    
-                    
-                    <p class='box' id="restaurant_list"> A list of API from the Restaurants</p>
-
-                </div>
+<body>
+    
+    <div class="container">        
+        <form action="">
+            <input type="hidden" id='hidden_token'>
+            <div class="col-sm-6 form-group row mt-4 px-0">
+                <label for="Genre" class="form-label col-sm-2">Genre:</label>
+                <select name="" id="select_genre" class="form-control form-control-sm col-sm-10">
+                    <option>Select...</option>                    
+                </select>
             </div>
-        </div>
-        <footer class = 'footer'>Tmzop <a href="https://github.com/Tmzop/INST377-Lab-Work">My Github Account</a></p>
-        <script src="script.js"></script>
-        
-    </body>
+            <div class="col-sm-6 form-group row px-0">
+                <label for="Genre" class="form-label col-sm-2">Playlists:</label>
+                <select name="" id="select_playlist" class="form-control form-control-sm col-sm-10">
+                    <option>Select...</option>                    
+                </select>
+            </div>                  
+            <div class="col-sm-6 row form-group px-0">
+                <button type="submit" id="btn_submit" class="btn btn-success col-sm-12">Search</button>
+            </div>          
+        </form>        
+        <div class="row">
+            <div class="col-sm-6 px-0">
+                <div class="list-group song-list">
+                    
+                </div>                                             
+            </div>
+            <div class="offset-md-1 col-sm-4" id="song-detail">                
+            </div>
+        </div>   
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="app.js" type="text/javascript"></script>
+</body>
 </html>
