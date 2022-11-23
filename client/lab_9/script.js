@@ -80,14 +80,6 @@ function processRestaurants(list) {
       */
 }
 
-// function filterList(array, filterInputValue) {
-//   return array.filter((item) => {
-//     const lowerCaseName = item.name.toLowerCase();
-//     const lowerCaseQuery = filterInputValue.toLowerCase();
-//     return lowerCaseName.includes(lowerCaseQuery);
-//   });
-// }
-
 function filterList(array, filterInputValue) {
   return newArray = array.filter((item) => {
     if (!item.name) { return; }
@@ -128,23 +120,20 @@ function markerPlace(array, map) {
   });
 }
 
-function initChart() {
-  const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-  ];
+function initChart(chart, object) {
+  const labels = Object.keys(object);
+  const info = Object.keys(object).map((item) => object[item].length);
+
+  // const info = [0, 10, 5, 2, 20, 30, 45];
 
   const data = {
     labels: labels,
+    // info: info,
     datasets: [{
-      label: 'My First dataset',
+      label: 'restaurants By category',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
+      data: [0, 10, 5, 2, 20, 30, 45]
     }]
   };
 
@@ -158,6 +147,26 @@ function initChart() {
     config
   );
 }
+
+function shapeDataForLineChart(array) {
+  return array.reduce((collection, item) => {
+    if (!collection[item.category]) {
+      collection[item.category] = [item];
+    } else {
+      collection[item.category].push(item);
+    }
+    return collection;
+  }, {});
+}
+async function getData() {
+  const url = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json'; // remote URL! you can test it in your browser
+  const data = await fetch(url); // We're using a library that mimics a browser 'fetch' for simplicity
+  const json = await data.json(); // the data isn't json until we access it using dot notation
+
+  const reply = json.filter((item) => Boolean(item.geocoded_column_1)).filter((item) => Boolean(item.name));
+  return reply;
+}
+
 async function mainEvent() {
   /*
         ## Main Event
@@ -174,61 +183,59 @@ async function mainEvent() {
   const chartTarget = document.querySelector('#myChart');
   submit.style.display = 'none'; // let your submit button disappear
 
-  /*
-        Let's get some data from the API - it will take a second or two to load
-        This next line goes to the request for 'GET' in the file at /server/routes/foodServiceRoutes.js
-        It's at about line 27 - go have a look and see what we're retrieving and sending back.
-       */
-  const results = await fetch('/api/foodServicePG');
-  const arrayFromJson = await results.json(); // here is where we get the data from our request as JSON
-  initChart(chartTarget);
-  /*
-        Below this comment, we log out a table of all the results using "dot notation"
-        An alternate notation would be "bracket notation" - arrayFromJson["data"]
-        Dot notation is preferred in JS unless you have a good reason to use brackets
-        The 'data' key, which we set at line 38 in foodServiceRoutes.js, contains all 1,000 records we need
-      */
-  // console.table(arrayFromJson.data);
+  const chartData = await getData();
+  const shapedData = shapeDataForLineChart(chartData);
+  console.log(shapedData);
+  const myChart = initChart(chartTarget, shapedData);
 
-  // in your browser console, try expanding this object to see what fields are available to work with
-  // for example: arrayFromJson.data[0].name, etc
-  // console.log(arrayFromJson.data[0]);
-
-  // this is called "string interpolation" and is how we build large text blocks with variables
-  // console.log(`${arrayFromJson.data[0].name} ${arrayFromJson.data[0].category}`);
-
-  // This IF statement ensures we can't do anything if we don't have information yet
-  if (arrayFromJson.data?.length > 0) { // the question mark in this means "if this is set at all"
+  if (chartData.length > 0) { // the question mark in this means "if this is set at all"
     submit.style.display = 'block'; // let's turn the submit button back on by setting it to display as a block when we have data available
     loadAnimation.classList.remove('lds-ellipsis');
     loadAnimation.classList.add('lds-ellipsis_hidden');
 
-    let currentList = [];
+    let currentArray;
 
-    form.addEventListener('input', (event) => {
-      console.log(event.target.value);
-      const filteredList = filterList(currentList, event.target.value);
-      injectHTML(filteredList);
-      markerPlace(filteredList, pageMap);
-    });
+    // form.addEventListener('input', (event) => {
+    //   console.log(event.target.value);
+    //   const filteredList = filterList(currentList, event.target.value);
+    //   injectHTML(filteredList);
+    //   markerPlace(filteredList, pageMap);
+    // });
 
     // And here's an eventListener! It's listening for a "submit" button specifically being clicked
     // this is a synchronous event event, because we already did our async request above, and waited for it to resolve
-    form.addEventListener('submit', (submitEvent) => {
+    form.addEventListener('submit', async (submitEvent) => {
       // This is needed to stop our page from changing to a new URL even though it heard a GET request
       submitEvent.preventDefault();
 
       // This constant will have the value of your 15-restaurant collection when it processes
-      currentList = processRestaurants(arrayFromJson.data);
+      currentArray = processRestaurants(chartData);
       //   console.log(currentList);
 
       // And this function call will perform the "side effect" of injecting the HTML list for you
-      injectHTML(currentList);
+      const restaurants = currentArray.filter((item) => Boolean(item.geocoded_column_1));
+      injectHTML(restaurants);
+      // markerPlace(restaurants, map);
       // markerPlace(currentList, pageMap);
 
       // By separating the functions, we open the possibility of regenerating the list
       // without having to retrieve fresh data every time
       // We also have access to some form values, so we could filter the list based on name
+    });
+
+    restoName.addEventListener('input', (event) => {
+      if (!currentArray.length) { return; }
+
+      const restaurants = currentArray
+        .filter((item) => {
+          const lowerCaseName = item.name.toLowerCase();
+          const lowerCaseQuery = event.target.value.toLowerCase();
+          return lowerCaseName.includes(lowerCaseQuery);
+        })
+        .filter((item) => Boolean(item.geocoded_column_1));
+      if (restaurants.length > 0) {
+        injectHTML(restaurants);
+      }
     });
   }
 }

@@ -19,11 +19,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name='viewport'
       content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-    <title>lab 8</title>
+    <title>lab 9</title>
     <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
      integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
      crossorigin=""/> -->
+     
     <link rel='stylesheet' href='style.css'/ media="screen" >
+    
      <!-- Make sure you put this AFTER Leaflet's CSS -->
     <!-- <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
@@ -53,7 +55,7 @@
                             
                             </div>
                             <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                            <button type="submit" id="get-resto">Change Restaurants</button>
+                            <button type="submit" id="form_button">Change Restaurants</button>
                         </form>
                     </div>
                 
@@ -62,8 +64,13 @@
                 <div class = 'box right_section'>
 
                     <h2>Local Restaurants Map</h2>
+                    
+                    <div class = "chart_container">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
                     <!-- <div id="map" class = "box"></div> -->
-
+                    
                     
                     <p class='box' id="restaurant_list"> A list of API from the Restaurants</p>
 
@@ -72,5 +79,6 @@
         </div>
         <footer class = 'footer'>Tmzop <a href="https://github.com/Tmzop/INST377-Lab-Work">My Github Account</a></p>
         <script src="script.js"></script>
+        
     </body>
 </html>

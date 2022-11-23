@@ -229,6 +229,11 @@ form input {
     /* Pick a good background colour for your hover pseudoclass */
     border: 2px solid rgb(254, 1, 153);
   }
+
+  .chart_container {
+    height: 100%;
+    width: 100%
+  }
 /* How To Write A Media Query For Small Screens */
 
 @media only screen and (max-width: 736px){
